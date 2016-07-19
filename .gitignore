@@ -29,6 +29,11 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+public
+views
+logger
+server/config.js
+.DS_Store
 
 # Optional npm cache directory
 .npm

@@ -1,0 +1,55 @@
+{
+  "name": "kblog-express",
+  "version": "1.0.0",
+  "description": "一个基于Express框架的个人博客系统",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node ./server/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://thondery@github.com/thondery/kblog-express.git"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "mongodb",
+    "redis",
+    "es6",
+    "babel",
+    "gulp",
+    "webpack",
+    "pm2"
+  ],
+  "author": "thondery <thondery@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thondery/kblog-express/issues"
+  },
+  "homepage": "https://github.com/thondery/kblog-express#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bytes": "^2.4.0",
+    "compression": "^1.6.2",
+    "connect-busboy": "0.0.2",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.7.1",
+    "errorhandler": "^1.4.3",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "lodash": "^4.13.1",
+    "log4js": "^0.6.38",
+    "method-override": "^2.3.6",
+    "moment": "^2.14.1",
+    "mongoose": "^4.5.5",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "swig": "^1.4.2"
+  }
+}
