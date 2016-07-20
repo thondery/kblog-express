@@ -5,3 +5,5 @@ import 'font-awesome/css/font-awesome.css'
 console.log('es6')
 
 const config = {}
+
+console.log(config)

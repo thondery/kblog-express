@@ -8,7 +8,7 @@ export default {
   name: 'app',
   //target: 'node',
   entry: {
-    vendor: ['jquery', 'lodash'],
+    vendor: ['jquery', 'lodash', 'bootstrap', 'react', 'react-dom', 'react-redux', 'redux'],
     index: './frontend/index.js'
   },
   output: {
@@ -17,17 +17,25 @@ export default {
     publicPath: '../'
   },
   resolve: {
-    extensions: ['', '.js', '.es', '.json']
+    extensions: ['', '.js', '.jsx', '.json']
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.(js|jsx|es6)$/,
+        loader: 'eslint',
+        include: [path.resolve(__dirname, 'frontend')],
+        exclude: /node_modules/
+      },
+    ],
     loaders: [
       {
-        test: /\.(js|es)?$/,
+        test: /\.(js|jsx|es6)?$/,
         exclude: /node_modules/,
         loader: 'babel',
         query: {
           cacheDirectory: true,
-          presets: ['es2015', 'stage-0'],
+          presets: ['es2015', 'stage-0', 'react'],
           //plugins: ['transform-runtime']
         }
       },
@@ -58,12 +66,6 @@ export default {
         
     ]
   },
-  /*node: {
-    console: true,
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
-  },*/
   plugins: [
     new webpack.DefinePlugin({
       "process.env": {
@@ -72,14 +74,17 @@ export default {
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
       _: 'lodash'
     }),
     new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.bundle.js'),
     new ExtractTextPlugin('css/[name].min.css'),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
     })
   ],
-  //devtool: 'source-map'
+  devtool: 'source-map'
 }

@@ -22,16 +22,16 @@ node-schedule        // 定时任务模块
 ### 目录结构
 
 ```js
-+ assets              // 静态资源
+- assets              // 静态资源
   + image             // 图片资源
   + sass              // sass预编译文件
 + frontend            // 前端js代码
 + libs                // 公用函数
 + logger              // 日志文件
-+ public              // 编译后的静态文件
+- public              // 编译后的静态文件
   + css               // 样式表文件
   + img               // 样式表图片
-+ server              // 服务端代码
+- server              // 服务端代码
   + api               // API接口
   + common            // 服务端公共函数
   + controller        // 控制器
@@ -40,7 +40,7 @@ node-schedule        // 定时任务模块
   + polices           // 过滤器
   + proxy             // 业务逻辑层
   + router            // 路由层
-  - app.js            // 入口文件
+  app.js              // 入口文件
 + views               // html模版
 ```
 
