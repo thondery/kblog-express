@@ -2,8 +2,13 @@
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
-console.log('es6')
+import '../assets/sass/index.scss'
 
-const config = {}
+import $ from 'jquery'
+import win from './common/init-window'
 
-console.log(config)
+
+$(() => {
+  win.Init()
+
+})

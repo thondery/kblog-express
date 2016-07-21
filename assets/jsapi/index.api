@@ -1,3 +1,14 @@
 {
-  "title": "kBlog - Index"
+  "title": "kBlog - Index",
+  "keywords": "node.js, express, es6, babel, webpack, mongodb",
+  "description": "一个基于Express框架的个人博客系统",
+  "style": "index",
+  "entry": "index",
+  "aside": {
+    "background": "../picture/hjC1k9GjMYzH3ZXatKu5.jpg",
+    "title": "<img src=\"../picture/logo.png\" alt=\"刚哥的家\">",
+    "slogan": "交流故事，沟通想法",
+    "sketch": "一个基于简书风格的博客实践"
+  },
+  "current": "index"
 }

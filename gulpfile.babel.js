@@ -6,6 +6,7 @@ import gulpLoadPlugins from 'gulp-load-plugins'
 import sequence from 'run-sequence'
 import del from 'del'
 import path from 'path'
+import pngquant from 'imagemin-pngquant'
 import { existsSync, readFileSync, unlink, writeFileSync } from 'fs'
 import compile from './webpack.config'
 import { watchHandle } from './libs/gulp-extend'
@@ -19,6 +20,18 @@ gulp.task('clean', () =>
   del.sync('./public', { dot: true })
 )
 
+gulp.task('picture', () => 
+  gulp.src(['./assets/picture/**/*.+(png|jpg|gif|svg)'])
+    .pipe($.imagemin({
+      progressive: true,
+      interlaced: true,
+      svgoPlugins: [{removeViewBox: false}],
+      optimizationLevel: 5,
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('./public/picture'))
+)
+
 gulp.task('compile', () => 
   gulp.src('./frontend/index.js')
     .pipe($.webpack(compile))
@@ -26,7 +39,7 @@ gulp.task('compile', () =>
 )
 
 gulp.task('build', () =>
-  runSequence('clean', ['compile'])
+  runSequence('clean', ['compile', 'picture'])
 )
 
 gulp.task('compile-html', () =>
@@ -37,7 +50,7 @@ gulp.task('compile-html', () =>
 )
 
 gulp.task('dev', () =>
-  runSequence('clean', ['compile', 'compile-html'], ['devServer'], ['watch'])
+  runSequence('clean', ['compile', 'compile-html', 'picture'], ['devServer'], ['watch'])
 )
 
 gulp.task('watch', () => {
@@ -72,6 +85,13 @@ gulp.task('devServer', () =>
 
 const getAPIData = file => {
   let jsAPI = path.basename(file.path).replace(/\.(html|htm)$/i, '.api')
-  let data = readFileSync('./assets/jsapi/' + jsAPI, 'utf-8')
-  return JSON.parse(data || '{}')
+  let data = JSON.parse(readFileSync('./assets/jsapi/' + jsAPI, 'utf-8') || '{}')
+  let auth = JSON.parse(readFileSync('./assets/jsapi/auth.api', 'utf-8') || '{}')
+  let link = JSON.parse(readFileSync('./assets/jsapi/link.api', 'utf-8') || '{}')
+  return auth.state ? Object.assign(data, { 
+    auth: auth.user, 
+    link: link 
+  }) : Object.assign(data, { 
+    link: link 
+  })
 }

@@ -19,6 +19,9 @@ export default {
   resolve: {
     extensions: ['', '.js', '.jsx', '.json']
   },
+  externals: {
+    $: 'jquery'
+  },
   module: {
     preLoaders: [
       {
