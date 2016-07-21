@@ -1,0 +1,15 @@
+  <!-- aside start -->
+  <div class="aside-left" style="background-image: url('{{ aside.background }}');">
+    <div class="bottom-block">
+      <h1>{% autoescape false %}{{ aside.title || '专题' }}{% endautoescape %}</h1>
+      <h3>{{ aside.slogan }}</h3>
+      <p>{{ aside.sketch }}</p>
+    </div>
+    <div class="img-info">
+      <i class="fa fa-info"></i>
+      <div class="info">
+         Powered by <a target="_blank" href="https://github.com/thondery">Thondery</a>
+      </div>
+    </div>
+  </div>
+  <!-- aside end -->

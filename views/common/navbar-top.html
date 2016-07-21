@@ -1,0 +1,12 @@
+    <!-- navbar-top start -->
+    <div class="navbar-top">
+      <div class="nav-group">
+        <a href="{{ link.index || '/' }}" {% if current == 'index' %}class="active"{% endif %}>全部</a>
+        <a href="{{ link.post || '/post' }}" {% if current == 'post' %}class="active"{% endif %}>日志</a>
+        <a href="{{ link.note || '/note' }}" {% if current == 'note' %}class="active"{% endif %}>笔记</a>
+      </div>
+      <div class="menu">
+        <i class="fa fa-align-justify" data-menubar="menu"></i>
+      </div>
+    </div>
+    <!-- navbar-top end -->

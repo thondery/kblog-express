@@ -1,0 +1,35 @@
+  <!-- tools-bar start -->
+  <div id="tools-bar">
+    <div class="tools-inner">
+      <div class="list-group">
+        <a href="{{ link.index || '/' }}" class="list-group-item active" data-toggle="tooltip" data-placement="right" title="首页">
+          <span class="glyphicon fa fa-home fa-lg" aria-hidden="true"> </span>
+          <span>首页</span>
+        </a>
+        <a href="{{ link.toptic || '/topic' }}" class="list-group-item" data-toggle="tooltip" data-placement="right" title="专题">
+          <span class="glyphicon fa fa-th-list" aria-hidden="true"> </span>
+          <span>专题</span>
+        </a>
+      </div>
+      <div class="list-group">
+{% if auth %}
+{% if auth.is_admin %}
+{% include 'tools-bar-admin.html' %}
+{% else %}
+{% include 'tools-bar-user.html' %}
+{% endif %}
+{% else %}    
+        <a href="{{ sign.sign_in }}" class="list-group-item{% if sign.active == 'sign-in' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="登录">
+          <span class="glyphicon fa fa-sign-in" aria-hidden="true"> </span>
+          <span>登录</span>
+        </a>
+        <a href="{{ sign.sign_up }}" class="list-group-item{% if sign.active == 'sign-up' %} active{% endif %}" data-toggle="tooltip" data-placement="right" title="注册">
+          <span class="glyphicon fa fa-user" aria-hidden="true"> </span>
+          <span>注册</span>
+        </a>
+{% endif %}
+      </div>
+    </div>
+    <div class="mask"></div>
+  </div>
+  <!-- tools-bar end -->
