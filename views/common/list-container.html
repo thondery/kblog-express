@@ -1,0 +1,44 @@
+        <!-- list-container start -->
+        <div class="list-container">
+          <div class="tag-list">
+{% for tag in tags.list %}
+{% if debug %}
+{% set taglink = 'index.html?tag=' + tag %}
+{% else %}
+{% set taglink = '?tag=' + tag %}
+{% endif %}
+            <a class="tag{% if tags.active == tag %} active{% endif %}" href="{{ taglink }}" data-toggle="tooltip" data-placement="bottom" title="{{ tag }}">
+              <span>{{ tag }}</span>
+            </a>
+{% endfor %}
+          </div>
+          <ul class="list-group">
+{% for item in post %}
+{% set itemImg = tools.firstImg(item.content) %}
+{% set update_at = tools.moment_to(item.update_at) %}
+{% if debug %}
+{% set itemlink = 'post.html' %}
+{% else %}
+{% set itemlink = '/post/' + item._id.toString() %}
+{% endif %}
+            <li class="list-group-item">
+{% if itemImg && !debug %}
+              <a href="{{ itemlink }}" class="wrap-img" target="_blank"><img src="{{ itemImg }}"></a>
+{% endif %}
+              <div>
+                <p class="list-top">{{ update_at }}</p>
+                <h4 class="title">
+                  <a href="{{ itemlink }}" target="_blank">{{ item.titlename }}</a>
+                </h4>
+                {{ tools.formatMd(item.content, 'note') }}
+                <div class="list-foot">
+                  <span>阅读 1764</span>
+                  <span> · 评论 8</span>
+                  <span> · 喜欢 46</span>
+                </div>
+              </div>
+            </li>
+{% endfor %}
+          </ul>
+        </div>
+        <!-- list-container end -->

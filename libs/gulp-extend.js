@@ -13,10 +13,10 @@ const [runSequence] = [
 ]
 
 const watchHandle = (e, opts, task) => {
-  if (e.event === 'change' || e.event === 'add') {
+  if (e.event === 'change' || e.event === 'add' || !opts) {
     return runSequence(task)
   }
-  if (e.event === 'unlink') {
+  if (e.event === 'unlink' && opts) {
     let [_assets, _dist, start] = [
       path.join(process.cwd(), opts.assets || 'assets'),
       path.join(process.cwd(), opts.dist || 'dist'),

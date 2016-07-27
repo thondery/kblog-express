@@ -7,14 +7,23 @@ import sequence from 'run-sequence'
 import del from 'del'
 import path from 'path'
 import pngquant from 'imagemin-pngquant'
-import { existsSync, readFileSync, unlink, writeFileSync } from 'fs'
+import { readFileSync, readdirSync, writeFileSync, existsSync, mkdirSync, statSync } from 'fs'
 import compile from './webpack.config'
 import { watchHandle } from './libs/gulp-extend'
+import tools from './libs/tools'
+import jsapi from './assets/jsapi/data'
+import _ from 'lodash'
+import mkdirp from 'mkdirp'
+import gmUtil from './server/common/gmutil'
+import gutil from 'gulp-util'
+import chalk from 'chalk'
+import prettyTime from 'pretty-hrtime'
 
 const [$, runSequence] = [
   gulpLoadPlugins(),
   sequence.use(gulp)
 ]
+
 
 gulp.task('clean', () =>
   del.sync('./public', { dot: true })
@@ -31,6 +40,36 @@ gulp.task('picture', () =>
     }))
     .pipe(gulp.dest('./public/picture'))
 )
+
+gulp.task('thumb', () => {
+  let docs = readdirSync('./assets/markdown')
+  return docs.map( item => {
+    let doc = readFileSync('./assets/markdown/' + item, 'utf-8')
+    let img = tools.firstImg(doc, 0)
+    if (img) {
+      let file = path.join(__dirname, './assets/markdown', img)
+      if (existsSync(file)) {
+        let start = process.hrtime()
+        gmUtil.thumbnail(file, { width: 300, height: 300, path: './public' }, err => {
+          let end = process.hrtime(start)
+          let time = prettyTime(end)
+          if (err) {
+            gutil.log(
+              '\'' + chalk.cyan('thumb => ' + tools.thumbnail(file)) + '\'',
+              chalk.red('errored after'),
+              chalk.magenta(time)
+            )
+            return gutil.log(err.message)
+          }
+          gutil.log(
+            'Finished', '\'' + chalk.cyan('thumb => ' + tools.thumbnail(file)) + '\'',
+            'after', chalk.magenta(time)
+          )
+        })
+      }
+    }
+  })
+})
 
 gulp.task('compile', () => 
   gulp.src('./frontend/index.js')
@@ -50,25 +89,28 @@ gulp.task('compile-html', () =>
 )
 
 gulp.task('dev', () =>
-  runSequence('clean', ['compile', 'compile-html', 'picture'], ['devServer'], ['watch'])
+  runSequence('clean', ['thumb', 'jsapi'], ['compile', 'compile-html', 'picture'], ['devServer'], ['watch'])
 )
 
 gulp.task('watch', () => {
   $.watch([
-      './assets/jsapi/*.api', 
+      './assets/jsapi/*.api',
+      './public/jsapi/*.api', 
       './views/**/*.+(html|htm)'
-    ], e => watchHandle(e, {
-      assets: './views',
-      dist: './public/html'
-    }, 'compile-html'))
+    ], e => watchHandle(e, null, 'compile-html'))
   $.watch([
       './assets/sass/**/*.scss', 
-      './assets/image/**/*.+(pg|gif|png|svg)', 
+      './assets/image/**/*.+(jpg|gif|png|svg)', 
       './frontend/**/*.+(js|jsx|es6)'
-    ], e => watchHandle(e, {
-      assets: './assets',
-      dist: './public'
-    }, 'compile'))
+    ], e => watchHandle(e, null, 'compile'))
+  $.watch([
+    './assets/markdown/*.+(md|markdown)',
+    './assets/picture/*.+(jpg|gif|png|svg)'
+  ], e => watchHandle(e, null, 'redata'))
+})
+
+gulp.task('redata', () => {
+  runSequence('data', ['thumb', 'jsapi'])
 })
 
 gulp.task('devServer', () =>
@@ -83,15 +125,43 @@ gulp.task('devServer', () =>
       }))
 )
 
+gulp.task('data', () => {
+  let docs = readdirSync('./assets/markdown')
+  let data = []
+  return docs.map( (item, i) => {
+    let doc = readFileSync('./assets/markdown/' + item, 'utf-8')
+    let stat = statSync('./assets/markdown/' + item)
+    data.push(tools.postInfo(doc, ['_id', 'titlename', 'content', 'tags', 'update_at'], {
+      update_at: stat.mtime
+    }))
+    if (i === docs.length - 1) {
+      writeFileSync('./assets/data.json', JSON.stringify(data, null, 2))
+    }
+  })
+})
+
+gulp.task('jsapi', () => {
+  let data = JSON.parse(readFileSync('./assets/data.json', 'utf-8') || '[]')
+  data = _.orderBy(data, ['update_at'], ['desc'])
+  mkdirp('./public/jsapi', '0755', err => {
+    if (err) throw err
+    jsapi.map( (item, n) => {
+      let obj = JSON.parse(readFileSync('./assets/jsapi/' + item.name + '.api', 'utf-8') || '{}')
+      if (item.length) {
+        obj[item.key] = _.slice(data, item.start, item.length)
+      } else {
+        obj[item.key] = _.find(data, item.find)
+      }
+      writeFileSync('./public/jsapi/' + item.name + '.api', JSON.stringify(obj, null, 2))
+    })
+  })
+})
+
 const getAPIData = file => {
   let jsAPI = path.basename(file.path).replace(/\.(html|htm)$/i, '.api')
-  let data = JSON.parse(readFileSync('./assets/jsapi/' + jsAPI, 'utf-8') || '{}')
+  let data = JSON.parse(readFileSync('./public/jsapi/' + jsAPI, 'utf-8') || '{}')
   let auth = JSON.parse(readFileSync('./assets/jsapi/auth.api', 'utf-8') || '{}')
   let link = JSON.parse(readFileSync('./assets/jsapi/link.api', 'utf-8') || '{}')
-  return auth.state ? Object.assign(data, { 
-    auth: auth.user, 
-    link: link 
-  }) : Object.assign(data, { 
-    link: link 
-  })
+  data = Object.assign(data, { link: link, tools: tools, debug: true })
+  return auth.state ? Object.assign(data, { auth: auth.user }) : data
 }

@@ -3,5 +3,6 @@
 {% block style %}{{ style || 'index' }}{% endblock %}
 {% block entry %}{{ entry || 'index' }}{% endblock %}
 {% block bodyer %}
-//---
+{% include 'common/list-container.html' %}
+{% include 'common/footer.html' %}
 {% endblock %}

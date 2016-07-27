@@ -8,7 +8,18 @@ export default {
   name: 'app',
   //target: 'node',
   entry: {
-    vendor: ['jquery', 'lodash', 'bootstrap', 'react', 'react-dom', 'react-redux', 'redux'],
+    vendor: [
+      'jquery', 
+      'lodash', 
+      'bootstrap', 
+      'react', 
+      'react-dom', 
+      'react-redux', 
+      'redux', 
+      'iscroll/build/iscroll-probe.js', 
+      'superagent',
+      'markdown-it'
+    ],
     index: './frontend/index.js'
   },
   output: {
@@ -71,7 +82,7 @@ export default {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
+      'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
     }),
@@ -89,5 +100,5 @@ export default {
       compress: { warnings: false }
     })
   ],
-  devtool: 'source-map'
+  //devtool: 'source-map'
 }

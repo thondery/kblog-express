@@ -3,6 +3,6 @@
   "toptic": "./toptic.html",
   "setting": "./setting.html",
   "writer": "./writer.html",
-  "post": "/?t=post",
-  "note": "/?t=note"
+  "post": "index.html?t=post",
+  "note": "index.html?t=note"
 }

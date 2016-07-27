@@ -10,5 +10,9 @@
     "slogan": "交流故事，沟通想法",
     "sketch": "一个基于简书风格的博客实践"
   },
-  "current": "index"
+  "current": "index",
+  "tags": {
+    "list": ["Javascript", "Node.js", "Lunix", "CentOS", "Nginx", "MongoDB", "Redis"],
+    "active": "Node.js"
+  }
 }

@@ -1,5 +1,7 @@
 
 
+$FONTFAMILY101:     "Lantinghei SC", "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
+
 html,
 body,
 .wraper {
@@ -8,6 +10,9 @@ body,
   overflow: hidden;
 }
 
+body {
+  font-family: $FONTFAMILY101
+}
 
 .wraper {
   display: flex;

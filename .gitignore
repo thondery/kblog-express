@@ -32,6 +32,7 @@ jspm_packages
 public
 logger
 server/config.js
+assets/data.json
 .DS_Store
 
 # Optional npm cache directory
