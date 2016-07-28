@@ -20,7 +20,8 @@ export default {
       'superagent',
       'markdown-it'
     ],
-    index: './frontend/index.js'
+    index: './frontend/index.js',
+    post: './frontend/post.js'
   },
   output: {
     path: path.join(__dirname, 'public'),

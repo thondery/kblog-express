@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+
+{% block wraper %}
+<div class="wraper">
+{% include 'tools-bar.html' %}
+  <div class="bodyer-wrap">
+    {% include 'navbar-top.html' %}
+    <div class="body-inner">
+      <div class="bodyer center">
+        {% block bodyer %}{% endblock %}
+      </div>
+      {% block fixed_btn %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

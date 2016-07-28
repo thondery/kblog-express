@@ -130,3 +130,12 @@
     }
   }
 }
+
+@media only screen and (max-width: 418px) {
+  .list-container {
+
+    .tag-list {
+      display: none;
+    }
+  }
+}

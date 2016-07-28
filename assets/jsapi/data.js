@@ -8,5 +8,11 @@ export default [
     start: 0,
     length: 10,
     find: { titlename: 'kBlog Express' }
+  },
+  {
+    name: 'post',
+    key: 'post',
+    pick: ['_id', 'titlename', 'content', 'tags', 'update_at'],
+    find: 'titlename~Node.js'
   }
 ]

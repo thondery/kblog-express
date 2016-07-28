@@ -92,6 +92,8 @@ const formatMd = (str, type) => {
   }
 }
 
+const mdRender = str => markdown.render(str)
+
 const postInfo = (str, pick, opts) => {
   // ['titlename', 'content'] => 导入
   // ['_id', 'titlename', 'content', 'tags', 'update_at']
@@ -148,6 +150,7 @@ export default {
   myError,
   firstImg,
   formatMd,
+  mdRender,
   moment_to,
   postInfo,
   imageCrop,

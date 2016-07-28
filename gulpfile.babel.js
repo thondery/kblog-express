@@ -11,6 +11,7 @@ import { readFileSync, readdirSync, writeFileSync, existsSync, mkdirSync, statSy
 import compile from './webpack.config'
 import { watchHandle } from './libs/gulp-extend'
 import tools from './libs/tools'
+import moment from 'moment'
 import jsapi from './assets/jsapi/data'
 import _ from 'lodash'
 import mkdirp from 'mkdirp'
@@ -18,6 +19,7 @@ import gmUtil from './server/common/gmutil'
 import gutil from 'gulp-util'
 import chalk from 'chalk'
 import prettyTime from 'pretty-hrtime'
+import jsonsql from 'jsonsql'
 
 const [$, runSequence] = [
   gulpLoadPlugins(),
@@ -150,7 +152,9 @@ gulp.task('jsapi', () => {
       if (item.length) {
         obj[item.key] = _.slice(data, item.start, item.length)
       } else {
-        obj[item.key] = _.find(data, item.find)
+        //obj[item.key] = _.find(data, item.find)
+        let _list = jsonsql(data, '* where ' + item.find)
+        obj[item.key] = _list.length > 0 ? _list[0] : undefined
       }
       writeFileSync('./public/jsapi/' + item.name + '.api', JSON.stringify(obj, null, 2))
     })
@@ -162,6 +166,6 @@ const getAPIData = file => {
   let data = JSON.parse(readFileSync('./public/jsapi/' + jsAPI, 'utf-8') || '{}')
   let auth = JSON.parse(readFileSync('./assets/jsapi/auth.api', 'utf-8') || '{}')
   let link = JSON.parse(readFileSync('./assets/jsapi/link.api', 'utf-8') || '{}')
-  data = Object.assign(data, { link: link, tools: tools, debug: true })
+  data = Object.assign(data, { link: link, tools: tools, moment: moment, debug: true })
   return auth.state ? Object.assign(data, { auth: auth.user }) : data
 }

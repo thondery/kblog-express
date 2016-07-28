@@ -1,0 +1,30 @@
+        <!-- post-inner start -->
+        <div class="post-inner">
+          <h1 class="show-title">{{ post.titlename }}</h1>
+          <div class="meta-top">
+            <span>阅读 1764</span>
+            <span> · 评论 8</span>
+            <span> · 喜欢 46</span>
+          </div>
+          <div class="show-content preview">{% autoescape false %}{{ tools.mdRender(post.content) }}{% endautoescape %}</div>
+          <div class="visitor_edit">
+            <div class="pull-left">
+              <div class="tag-list">
+{% for tag in post.tags %}
+{% if debug %}
+{% set taglink = 'index.html?tag=' + tag %}
+{% else %}
+{% set taglink = '?tag=' + tag %}
+{% endif %}
+                <a class="tag" href="{{ taglink }}" data-toggle="tooltip" data-placement="top" title="{{ tag }}">
+                  <span>{{ tag }}</span>
+                </a>
+{% endfor %}
+              </div>
+            </div>
+            <div class="pull-right">
+              <span>最后更新于：{{ moment(post.update_at).format('YYYY-MM-DD HH:mm:ss') }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- post-inner end -->
